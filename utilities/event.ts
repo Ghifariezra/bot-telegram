@@ -231,13 +231,11 @@ Setelah kamu memilih, bot akan menampilkan *informasi cuaca terbaru* untuk wilay
         longitude: number;
     }) {
         const street = await this.streetService.getStreet(location.latitude, location.longitude);
-        const village = street.raw.neighbourhood.trim().split(" ").join("").toLowerCase();
-        const villageCapitalized = village.charAt(0).toUpperCase() + village.slice(1);
 
-        const villageCode = this.dataAdm.flatMap((d: Data) => d.villages).find((d: District) => d.village_name === villageCapitalized);
+        const villageCode = this.dataAdm.flatMap((d: Data) => d.villages).find((d: District) => d.village_name === street.village);
 
         if (!villageCode) {
-            await bot.sendMessage(chatId, `⚠️ Kelurahan "${villageCapitalized}" tidak ditemukan.`);
+            await bot.sendMessage(chatId, `⚠️ Kelurahan "${street.village}" tidak ditemukan.`);
             return;
         }
 
@@ -248,7 +246,7 @@ Setelah kamu memilih, bot akan menampilkan *informasi cuaca terbaru* untuk wilay
         const check = weatherNow;
 
         if (!check) {
-            await bot.sendMessage(chatId, `⚠️ Kelurahan "${villageCapitalized}" tidak ditemukan.`);
+            await bot.sendMessage(chatId, `⚠️ Kelurahan "${street.village}" tidak ditemukan.`);
             return;
         }
 
@@ -266,7 +264,6 @@ Setelah kamu memilih, bot akan menampilkan *informasi cuaca terbaru* untuk wilay
 🌡️ *Temperatur* : ${check.t}°C  
 💧 *Kelembaban* : ${check.hu}%  
 🍃 *Kecepatan Angin* : ${check.ws} m/s`;
-
 
         await bot.sendPhoto(chatId, image, {
             caption: messageWeather,
