@@ -5,6 +5,8 @@ import AreaService from "./service/area";
 const token = process.env.TELEGRAM_TOKEN ?? "";
 const botName = process.env.BOT_NAME ?? "MyBot";
 const renderURL = process.env.RENDER_EXTERNAL_URL;
+const PORT = process.env.PORT || 3000;
+
 
 if (!token) {
     throw new Error("TELEGRAM_TOKEN is not defined in environment variables");
@@ -90,4 +92,4 @@ bot.on("message", async (msg) => {
     }
 });
 
-export default bot;
+export { bot, PORT, token };

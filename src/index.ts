@@ -3,10 +3,7 @@ dotenv.config();
 
 import express from "express";
 import bodyParser from "body-parser";
-import bot from "./telegramBot";
-
-const token = process.env.TELEGRAM_TOKEN ?? "";
-const PORT = process.env.PORT || 3000;
+import { bot, PORT, token } from "./telegramBot";
 
 const app = express();
 app.use(bodyParser.json());
