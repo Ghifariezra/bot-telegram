@@ -13,6 +13,7 @@ app.use(bodyParser.json());
 
 // ✅ endpoint untuk webhook
 app.post(`/bot${token}`, (req, res) => {
+    console.log(req.body);
     bot.processUpdate(req.body);
     res.sendStatus(200);
 });
