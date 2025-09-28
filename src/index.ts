@@ -4,9 +4,11 @@ dotenv.config();
 import TelegramBot from "node-telegram-bot-api";
 import Events from "../utilities/event";
 import AreaService from "./service/area";
+import express from "express";
 
 const token = process.env.TELEGRAM_TOKEN ?? "";
 const botName = process.env.BOT_NAME ?? "MyBot";
+const PORT = 3000;
 
 if (!token) {
     throw new Error("TELEGRAM_TOKEN is not defined in environment variables");
@@ -85,4 +87,13 @@ bot.on("message", async (msg) => {
             await events.geoLocationEvent(msg.chat.id, bot, msg.location!);
             break;
     }
+});
+
+// 🚀 Tambahkan Express server agar Render mendeteksi open port
+const app = express();
+app.get("/", (_, res) => {
+    res.send("✅ Telegram bot is running...");
+});
+app.listen(PORT, () => {
+    console.log(`Server is listening on port ${PORT}`);
 });

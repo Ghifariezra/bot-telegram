@@ -9,6 +9,7 @@
     "build": "tsc",
     "lint": "eslint . --ext .ts,.js",
     "lint:fix": "eslint . --ext .ts,.js --fix",
+    "postinstall": "prisma generate",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -17,6 +18,7 @@
   "packageManager": "pnpm@10.13.1",
   "devDependencies": {
     "@prisma/client": "^6.16.2",
+    "@types/express": "^5.0.3",
     "@types/node": "^24.5.2",
     "@types/node-telegram-bot-api": "^0.64.11",
     "@types/sharp": "^0.32.0",
@@ -36,6 +38,7 @@
     "@upstash/redis": "^1.35.4",
     "axios": "^1.12.2",
     "dotenv": "^17.2.2",
+    "express": "^5.1.0",
     "node-telegram-bot-api": "^0.66.0",
     "sharp": "^0.34.4"
   }
