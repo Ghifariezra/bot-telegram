@@ -5,7 +5,7 @@ import PrismaService from "../../../lib/prisma";
 
 export default class AreaService extends PrismaService {
     private readonly CACHE_KEY = "area:provinces:all";
-    private readonly CACHE_TTL = 3600;
+    private readonly CACHE_TTL = 60 * 60 * 24;
     private gzip = promisify(zlib.gzip);
     private gunzip = promisify(zlib.gunzip);
 
