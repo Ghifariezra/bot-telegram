@@ -8,14 +8,16 @@ import express from "express";
 
 const token = process.env.TELEGRAM_TOKEN ?? "";
 const botName = process.env.BOT_NAME ?? "MyBot";
-const PORT = 3000;
+const PORT = process.env.PORT ?? 8000;
+const url = process.env.RENDER_EXTERNAL_URL || `https://bot-telegram-cgdu.onrender.com`;
 
 if (!token) {
     throw new Error("TELEGRAM_TOKEN is not defined in environment variables");
 }
 
 // Bot
-const bot = new TelegramBot(token, { polling: true });
+const bot = new TelegramBot(token, { webHook: true });
+bot.setWebHook(`${url}/bot${token}`);
 
 // Data
 const weather = new AreaService();
@@ -89,11 +91,21 @@ bot.on("message", async (msg) => {
     }
 });
 
-// 🚀 Tambahkan Express server agar Render mendeteksi open port
+// 🚀 Express server untuk webhook
 const app = express();
-app.get("/", (_, res) => {
-    res.send("✅ Telegram bot is running...");
+app.use(express.json());
+
+// Endpoint untuk Telegram webhook
+app.post(`/bot${token}`, (req, res) => {
+    bot.processUpdate(req.body);
+    res.sendStatus(200);
 });
+
+// Health check
+app.get("/", (_, res) => {
+    res.send("✅ Telegram bot is running with webhook...");
+});
+
 app.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}`);
 });
