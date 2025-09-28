@@ -23,4 +23,4 @@ export const currentWeather = (dt: WeatherData[]) => {
     }) || todayWeather[todayWeather.length - 1];
 
     return check;
-}
+};

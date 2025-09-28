@@ -53,5 +53,5 @@ export function getImageUrl(image: string) {
             break;
     }
 
-    return iconUrl
+    return iconUrl;
 }

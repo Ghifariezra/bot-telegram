@@ -2,7 +2,7 @@ import { nominatimInstance } from "../../../lib/axios";
 
 export default class StreetService {
     async getStreet(lat: number, lon: number) {
-        const { data } = await nominatimInstance.get(``, {
+        const { data } = await nominatimInstance.get("", {
             params: {
                 format: "json",
                 lat: lat,

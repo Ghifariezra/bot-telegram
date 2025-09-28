@@ -85,4 +85,4 @@ bot.on("message", async (msg) => {
             await events.geoLocationEvent(msg.chat.id, bot, msg.location!);
             break;
     }
-})
+});
