@@ -7,7 +7,6 @@ const botName = process.env.BOT_NAME ?? "MyBot";
 const renderURL = process.env.RENDER_EXTERNAL_URL;
 const PORT = process.env.PORT || 3000;
 
-
 if (!token) {
     throw new Error("TELEGRAM_TOKEN is not defined in environment variables");
 }
@@ -89,6 +88,13 @@ bot.on("message", async (msg) => {
         case checkLoc:
             await events.geoLocationEvent(msg.chat.id, bot, msg.location!);
             break;
+
+        default:
+            // /start command
+            bot.onText(/^\/start$/, (msg) => {
+                const chatId = msg.chat.id;
+                events.startEvent(chatId, bot, botName);
+            });
     }
 });
 
