@@ -88,13 +88,6 @@ bot.on("message", async (msg) => {
         case checkLoc:
             await events.geoLocationEvent(msg.chat.id, bot, msg.location!);
             break;
-
-        default:
-            // /start command
-            bot.onText(/^\/start$/, (msg) => {
-                const chatId = msg.chat.id;
-                events.startEvent(chatId, bot, botName);
-            });
     }
 });
 
