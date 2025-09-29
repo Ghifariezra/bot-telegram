@@ -1,9 +1,9 @@
-import type TelegramBot from "node-telegram-bot-api";
 import WeatherService from "../src/service/weather";
 import StreetService from "../src/service/street";
 import { getImageUrl } from "./icon";
 import { batch } from "./batch";
 import { currentWeather } from "./currentWeather";
+import type TelegramBot from "node-telegram-bot-api";
 import type { District, Province, Data } from "../types/provinces";
 
 export default class Events extends WeatherService {
@@ -271,4 +271,39 @@ Setelah kamu memilih, bot akan menampilkan *informasi cuaca terbaru* untuk wilay
         });
 
     }
+
+    // Di dalam class Events
+    async helpEvent(chatId: number, bot: TelegramBot, botName: string) {
+        await bot.sendMessage(
+            chatId,
+            `ℹ️ *Bantuan ${botName}*  
+
+Berikut fitur yang bisa kamu gunakan:  
+
+- 🚀 */start* → Tampilkan menu utama  
+- 🌦 *Weather* → Cek cuaca berdasarkan provinsi/kota  
+- 🏠 *Wilayah* → Navigasi Provinsi → Kota → Kecamatan → Desa  
+- 📍 *Location* → Kirim lokasi langsung dari HP untuk deteksi otomatis  
+- ❓ *Help* → Menampilkan menu bantuan ini  
+
+📌 *Tips*:  
+- Tombol *Location* hanya bisa digunakan dari aplikasi Telegram di HP.  
+- Jika di Web/PC, silakan kirim koordinat manual (contoh: \`-6.2000,106.8166\`).`,
+            {
+                parse_mode: "Markdown",
+                reply_markup: {
+                    inline_keyboard: [
+                        [
+                            { text: "🌤️ Cek Cuaca", callback_data: "weather" },
+                            { text: "📍 Kirim Lokasi", callback_data: "location" }
+                        ],
+                        [
+                            { text: "↩️ Kembali ke Menu Utama", callback_data: "start_menu" }
+                        ]
+                    ]
+                }
+            }
+        );
+    }
+
 }

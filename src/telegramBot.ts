@@ -67,10 +67,7 @@ bot.on("callback_query", async (callbackQuery) => {
                 break;
 
             case data.includes("help"):
-                await bot.sendMessage(
-                    chatId,
-                    "Available commands:\n/start - tampilkan menu\n/weather - cek cuaca\n/location - share lokasi"
-                );
+                await events.helpEvent(chatId, bot, botName);
                 break;
         }
 
