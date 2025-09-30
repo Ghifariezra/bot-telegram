@@ -184,6 +184,8 @@ Setelah kamu memilih, bot akan menampilkan *informasi cuaca terbaru* untuk wilay
         const weather = await this.getWeather(village);
         const dt = weather.data[0].cuaca.flat();
 
+        console.log(dt);
+
         const weatherNow = currentWeather(dt);
         const check = weatherNow;
 
