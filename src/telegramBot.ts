@@ -79,12 +79,30 @@ bot.on("callback_query", async (callbackQuery) => {
 });
 
 bot.on("message", async (msg) => {
-    const checkLoc = msg.location !== undefined;
+    const chatId = msg.chat.id;
 
-    switch (true) {
-        case checkLoc:
-            await events.geoLocationEvent(msg.chat.id, bot, msg.location!);
-            break;
+    // 1. Kalau user kirim share location
+    if (msg.location) {
+        await events.geoLocationEvent(chatId, bot, msg.location);
+        return;
+    }
+
+    // 2. Kalau user ketik koordinat manual
+    if (msg.text) {
+        // regex untuk deteksi format koordinat: angka desimal, koma/pemisah
+        const coordRegex = /^(-?\d+(\.\d+)?),\s*(-?\d+(\.\d+)?)$/;
+
+        const match = msg.text.match(coordRegex);
+
+        if (match && typeof match[1] === "string" && typeof match[3] === "string") {
+
+            const loc = {
+                latitude: parseFloat(match[1]),
+                longitude: parseFloat(match[3])
+            };
+
+            await events.geoLocationEvent(chatId, bot, loc);
+        }
     }
 });
 
