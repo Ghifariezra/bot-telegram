@@ -185,17 +185,13 @@ Setelah kamu memilih, bot akan menampilkan *informasi cuaca terbaru* untuk wilay
         const dt = weather.data[0].cuaca.flat();
 
         const weatherNow = currentWeather(dt);
-        const check = weatherNow;
 
-        console.log(dt);
-        console.log(check);
-
-        if (!check) {
+        if (!weatherNow) {
             await bot.sendMessage(chatId, `⚠️ Kelurahan "${village}" tidak ditemukan.`);
             return;
         }
 
-        const image = getImageUrl(check.weather_desc_en);
+        const image = getImageUrl(weatherNow.weather_desc_en);
 
         const messageWeather =
             `🌍 *Lokasi*  
@@ -204,11 +200,11 @@ Setelah kamu memilih, bot akan menampilkan *informasi cuaca terbaru* untuk wilay
 • Kecamatan: *${weather.lokasi.kecamatan}*  
 • Kelurahan: *${weather.lokasi.desa}*  
 
-🌤️ *Cuaca* : ${check.weather_desc}  
+🌤️ *Cuaca* : ${weatherNow.weather_desc}  
 
-🌡️ *Temperatur* : ${check.t}°C  
-💧 *Kelembaban* : ${check.hu}%  
-🍃 *Kecepatan Angin* : ${check.ws} m/s`;
+🌡️ *Temperatur* : ${weatherNow.t}°C  
+💧 *Kelembaban* : ${weatherNow.hu}%  
+🍃 *Kecepatan Angin* : ${weatherNow.ws} m/s`;
 
 
         await bot.sendPhoto(chatId, image, {
@@ -246,14 +242,13 @@ Setelah kamu memilih, bot akan menampilkan *informasi cuaca terbaru* untuk wilay
         const dt = weather.data[0].cuaca.flat();
 
         const weatherNow = currentWeather(dt);
-        const check = weatherNow;
 
-        if (!check) {
+        if (!weatherNow) {
             await bot.sendMessage(chatId, `⚠️ Kelurahan "${street.village}" tidak ditemukan.`);
             return;
         }
 
-        const image = getImageUrl(check.weather_desc_en);
+        const image = getImageUrl(weatherNow.weather_desc_en);
 
         const messageWeather =
             `🌍 *Lokasi*  
@@ -262,11 +257,11 @@ Setelah kamu memilih, bot akan menampilkan *informasi cuaca terbaru* untuk wilay
 • Kecamatan: *${weather.lokasi.kecamatan}*  
 • Kelurahan: *${weather.lokasi.desa}*  
 
-🌤️ *Cuaca* : ${check.weather_desc}  
+🌤️ *Cuaca* : ${weatherNow.weather_desc}  
 
-🌡️ *Temperatur* : ${check.t}°C  
-💧 *Kelembaban* : ${check.hu}%  
-🍃 *Kecepatan Angin* : ${check.ws} m/s`;
+🌡️ *Temperatur* : ${weatherNow.t}°C  
+💧 *Kelembaban* : ${weatherNow.hu}%  
+🍃 *Kecepatan Angin* : ${weatherNow.ws} m/s`;
 
         await bot.sendPhoto(chatId, image, {
             caption: messageWeather,
