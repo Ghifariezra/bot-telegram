@@ -11,7 +11,8 @@ if (!token) {
     throw new Error("TELEGRAM_TOKEN is not defined in environment variables");
 }
 
-const bot = new TelegramBot(token, { webHook: true });
+const bot = new TelegramBot(token, { polling: true });
+// const bot = new TelegramBot(token, { webHook: true });
 
 // ✅ Daftarkan webhook ke URL Render
 if (renderURL) {
@@ -80,29 +81,29 @@ bot.on("callback_query", async (callbackQuery) => {
 
 bot.on("message", async (msg) => {
     const chatId = msg.chat.id;
+    const checkLoc = msg.location !== undefined;
+    const checkText = msg.text !== undefined && typeof msg.text === "string";
 
-    // 1. Kalau user kirim share location
-    if (msg.location) {
-        await events.geoLocationEvent(chatId, bot, msg.location);
-        return;
-    }
+    switch (true) {
+        case checkLoc:
+            await events.geoLocationEvent(chatId, bot, msg.location!);
+            break;
+        case checkText:
+            if (msg.text) {
+                const coordRegex = /^(-?\d+(\.\d+)?),\s*(-?\d+(\.\d+)?)$/;
 
-    // 2. Kalau user ketik koordinat manual
-    if (msg.text) {
-        // regex untuk deteksi format koordinat: angka desimal, koma/pemisah
-        const coordRegex = /^(-?\d+(\.\d+)?),\s*(-?\d+(\.\d+)?)$/;
+                const match = msg.text.match(coordRegex);
 
-        const match = msg.text.match(coordRegex);
-
-        if (match && typeof match[1] === "string" && typeof match[3] === "string") {
-
-            const loc = {
-                latitude: parseFloat(match[1]),
-                longitude: parseFloat(match[3])
-            };
-
-            await events.geoLocationEvent(chatId, bot, loc);
-        }
+                if (match) {
+                    if (match[1] && match[3]) {
+                        await events.geoLocationEvent(chatId, bot, {
+                            latitude: parseFloat(match[1]),
+                            longitude: parseFloat(match[3])
+                        });
+                    }
+                }
+            }
+            break;
     }
 });
 
