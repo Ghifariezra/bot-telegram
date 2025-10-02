@@ -11,8 +11,7 @@ if (!token) {
     throw new Error("TELEGRAM_TOKEN is not defined in environment variables");
 }
 
-const bot = new TelegramBot(token, { polling: true });
-// const bot = new TelegramBot(token, { webHook: true });
+const bot = new TelegramBot(token, { webHook: true });
 
 // ✅ Daftarkan webhook ke URL Render
 if (renderURL) {
