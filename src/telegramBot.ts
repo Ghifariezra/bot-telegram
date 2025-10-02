@@ -83,7 +83,7 @@ bot.on("message", async (msg) => {
     const chatId = msg.chat.id;
     const checkLoc = msg.location !== undefined;
     const checkText = msg.text !== undefined && typeof msg.text === "string";
-
+ 
     switch (true) {
         case checkLoc:
             await events.geoLocationEvent(chatId, bot, msg.location!);
